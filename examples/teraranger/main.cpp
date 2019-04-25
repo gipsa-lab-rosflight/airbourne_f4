@@ -29,19 +29,70 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef RC_H
-#define RC_H
-
+#include <string>
 #include "system.h"
+#include "i2c.h"
+#include "teraranger.h"
+#include "vcp.h"
+#include "printf.h"
+#include "led.h"
 
-#include "gpio.h"
+VCP* uartPtr = NULL;
 
-class RC_BASE
+static void _putc(void *p, char c)
 {
+  (void)p; // avoid compiler warning about unused variable
+  uartPtr->put_byte(c);
+}
 
-public:
-  virtual float read(uint8_t channel) = 0;
-  virtual bool lost() = 0;
-};
 
-#endif // RC_H
+int main() {
+  
+  systemInit();
+  
+  VCP vcp;
+  vcp.init();
+  uartPtr = &vcp;
+  
+  init_printf(NULL, _putc);
+  LED warn;
+  warn.init(LED1_GPIO, LED1_PIN);
+  LED info;
+  info.init(LED2_GPIO, LED2_PIN);
+
+  delay(500);
+
+  info.on();
+  
+  I2C i2c1;
+  i2c1.init(&i2c_config[EXTERNAL_I2C]);
+  TeraRanger teraranger;
+
+  while(!teraranger.init(&i2c1))
+  {
+    printf("teraranger not ready, retrying... \n");
+    i2c1.unstick();
+    delay(500);
+  }
+  
+  volatile float dist;
+  uint32_t next_print_ms = millis();
+  while(true)
+  {
+    teraranger.update();
+    if (millis() > next_print_ms)
+    {
+      if (teraranger.present())
+      {
+        dist = teraranger.read();
+        printf("sonar read %.3f\n", dist);
+      }
+      else
+      {
+        printf("sonar unavailable\n");
+      }
+      next_print_ms += 20;
+    }
+  }
+  
+}

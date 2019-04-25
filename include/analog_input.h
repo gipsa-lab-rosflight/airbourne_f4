@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, James Jackson
+ * Copyright (c) 2019, Amaury Negre
  *
  * All rights reserved.
  *
@@ -29,19 +29,24 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef RC_H
-#define RC_H
+#ifndef ANALOG_INPUT_H
+#define ANALOG_INPUT_H
 
 #include "system.h"
-
 #include "gpio.h"
 
-class RC_BASE
+class AnalogInput
 {
-
+private:
+	GPIO gpio_;
+	uint8_t channel_;
+	ADC_TypeDef* adc_dev_;
+	
 public:
-  virtual float read(uint8_t channel) = 0;
-  virtual bool lost() = 0;
+	void init(ADC_TypeDef* ADCx, uint8_t channel, GPIO_TypeDef* gpio_port, uint16_t pin);
+
+	uint16_t read();
+	
 };
 
-#endif // RC_H
+#endif // ANALOG_INPUT_H

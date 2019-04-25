@@ -159,7 +159,7 @@
 
 class MPU6000 {
 public:
-  void init(SPI* spi_drv);
+  void init(SPI* spi_drv, GPIO_TypeDef* gpio_port, uint16_t gpio_pin);
 
   void read(float *accel_data, float *gyro_data, float *temp_data, uint64_t *time_us);
   void data_transfer_callback();

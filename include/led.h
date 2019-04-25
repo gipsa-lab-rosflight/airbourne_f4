@@ -32,7 +32,7 @@
 #ifndef DRV_LED_H
 #define DRV_LED_H
 
-#include "revo_f4.h"
+#include "system.h"
 #include "gpio.h"
 
 class LED : public GPIO

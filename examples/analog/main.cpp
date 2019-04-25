@@ -29,19 +29,56 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef RC_H
-#define RC_H
+#include <string>
+#include "revo_f4.h"
 
-#include "system.h"
+#include "vcp.h"
+#include "printf.h"
+#include "led.h"
 
-#include "gpio.h"
+#include "analog_input.h"
 
-class RC_BASE
+VCP* uartPtr = NULL;
+
+static void _putc(void *p, char c)
 {
+  (void)p; // avoid compiler warning about unused variable
+  uartPtr->put_byte(c);
+}
 
-public:
-  virtual float read(uint8_t channel) = 0;
-  virtual bool lost() = 0;
-};
 
-#endif // RC_H
+int main() {
+  
+  systemInit();
+	
+  VCP vcp;
+  vcp.init();
+  uartPtr = &vcp;
+  init_printf(NULL, _putc);
+
+  LED warn;
+  warn.init(LED1_GPIO, LED1_PIN);
+  LED info;
+  info.init(LED2_GPIO, LED2_PIN);
+
+  delay(500);
+	
+  info.on();
+
+	AnalogInput vbat, current;
+	
+	current.init(ADC1, ADC_Channel_11, GPIOC, GPIO_Pin_1);
+	vbat.init(ADC1, ADC_Channel_12, GPIOC, GPIO_Pin_2);
+	
+	
+  while(true)
+  {
+		uint16_t adc_val = vbat.read();
+		
+ 		printf("analog value : %d %d\n",
+ 					 (int) vbat.read(),
+ 					 (int) current.read());
+		delay(500);
+  }
+  
+}

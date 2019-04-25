@@ -31,7 +31,7 @@
 
 #pragma once
 
-#include "revo_f4.h"
+#include "system.h"
 
 #include "gpio.h"
 

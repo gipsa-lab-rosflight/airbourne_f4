@@ -29,7 +29,6 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-
 #include "rc_ppm.h"
 
 RC_PPM* RC_PPM_Ptr = NULL;
@@ -149,7 +148,15 @@ void RC_PPM::pulse_callback()
   }
 }
 
-extern "C"
+void RC_PPM::irq_handler()
+{
+	if(RC_PPM_Ptr != NULL)
+	{
+		RC_PPM_Ptr->pulse_callback();
+	}		
+}
+
+/*extern "C"
 {
 
 void PPM_RC_IQRHandler(void)
@@ -161,3 +168,4 @@ void PPM_RC_IQRHandler(void)
 }
 
 }
+*/

@@ -57,6 +57,8 @@ public:
   bool lost();
 
   void pulse_callback();
+
+	static void irq_handler();
 };
 
 #endif // RC_PPM_H

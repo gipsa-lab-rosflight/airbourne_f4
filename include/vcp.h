@@ -1,7 +1,7 @@
 #ifndef VCP_CLASS_H
 #define VCP_CLASS_H
 
-#include "revo_f4.h"
+#include "system.h"
 
 #include "serial.h"
 #include "gpio.h"

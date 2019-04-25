@@ -33,7 +33,7 @@
 
 #include <stdint.h>
 
-#include "revo_f4.h"
+#include "system.h"
 
 #include "gpio.h"
 
@@ -105,7 +105,7 @@ public:
   {
     RESULT_ERROR = 0,
     RESULT_SUCCESS = 1,
-    RESULT_BUSY = -1
+    RESULT_BUSY = -1,
   };
   
   class Debug_History

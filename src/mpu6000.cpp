@@ -49,13 +49,13 @@ void MPU6000::write(uint8_t reg, uint8_t data)
   delayMicroseconds(1);
 }
 
-void MPU6000::init(SPI* spi_drv)
+void MPU6000::init(SPI* spi_drv, GPIO_TypeDef* gpio_port, uint16_t gpio_pin)
 {
   IMU_Ptr = this;
   spi = spi_drv;
 
   // Configure Chip Select Pin
-  cs_.init(MPU6000_CS_GPIO, MPU6000_CS_PIN, GPIO::OUTPUT);
+  cs_.init(gpio_port, gpio_pin, GPIO::OUTPUT);
   spi->set_divisor(2); // 21 MHz SPI clock (within 20 +/- 10%)
 
   write(MPU_RA_PWR_MGMT_1, MPU_BIT_H_RESET);

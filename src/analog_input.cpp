@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, James Jackson
+ * Copyright (c) 2019, Amaury Negre
  *
  * All rights reserved.
  *
@@ -29,19 +29,50 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef RC_H
-#define RC_H
+#include "analog_input.h"
+#include "adc.h"
 
-#include "system.h"
+#include "printf.h"
 
-#include "gpio.h"
+static DRV_ADC DRV_ADC1;
+static DRV_ADC DRV_ADC2;
+static DRV_ADC DRV_ADC3;
 
-class RC_BASE
+void AnalogInput::init(ADC_TypeDef* ADCx, uint8_t channel, GPIO_TypeDef* gpio_port, uint16_t pin)
 {
+	adc_dev_ = ADCx;
+	channel_ = channel;
+	
+	if(adc_dev_==ADC1)
+	{
+		DRV_ADC1.init(ADC1);
+	}else if(adc_dev_==ADC2)
+	{
+		DRV_ADC2.init(ADC2);
+	}else if(adc_dev_==ADC3)
+	{
+		DRV_ADC3.init(ADC3);
+	}
+	gpio_.init(gpio_port, pin, GPIO::ANALOG);
 
-public:
-  virtual float read(uint8_t channel) = 0;
-  virtual bool lost() = 0;
-};
+}
 
-#endif // RC_H
+uint16_t AnalogInput::read()
+{
+	uint32_t timeout = 0xFFF;
+	
+	ADC_RegularChannelConfig(adc_dev_, channel_, 1, ADC_SampleTime_3Cycles);
+	
+	// Start the conversion
+  ADC_SoftwareStartConv(adc_dev_);
+		
+  // Wait until conversion completion
+  while(ADC_GetFlagStatus(adc_dev_, ADC_FLAG_EOC) == RESET)
+	{
+		if(timeout--==0x00){
+			return 0;
+		}
+	}
+  // Get the conversion value
+  return ADC_GetConversionValue(adc_dev_);
+}

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, James Jackson
+ * Copyright (c) 2019, Amaury Negre
  *
  * All rights reserved.
  *
@@ -29,19 +29,21 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef RC_H
-#define RC_H
+#ifndef DRV_ADC_H
+#define DRV_ADC_H
 
 #include "system.h"
 
-#include "gpio.h"
-
-class RC_BASE
+class DRV_ADC
 {
-
+private:
+	ADC_TypeDef* dev_;
 public:
-  virtual float read(uint8_t channel) = 0;
-  virtual bool lost() = 0;
+	
+	DRV_ADC();	
+	void init(ADC_TypeDef* dev);
+	
 };
 
-#endif // RC_H
+
+#endif // DRV_ADC_H

@@ -52,7 +52,8 @@ public:
     PERIPH_IN,
     PERIPH_IN_OUT,
     ANALOG,
-    EXTERNAL_INTERRUPT
+    EXTERNAL_INTERRUPT,
+    PERIPH_IN_OUT_PULLUP,
   }gpio_mode_t;
 
   void init(GPIO_TypeDef* BasePort, uint16_t pin, gpio_mode_t mode);

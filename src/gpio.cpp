@@ -107,8 +107,14 @@ void GPIO::set_mode(gpio_mode_t mode)
     GPIO_InitStruct.GPIO_OType = GPIO_OType_OD;
     GPIO_InitStruct.GPIO_PuPd = GPIO_PuPd_NOPULL;
     break;
+  case PERIPH_IN_OUT_PULLUP:
+    GPIO_InitStruct.GPIO_Mode = GPIO_Mode_AF;
+    GPIO_InitStruct.GPIO_OType = GPIO_OType_OD;
+    GPIO_InitStruct.GPIO_PuPd = GPIO_PuPd_UP;
+    break;
   case ANALOG:
     GPIO_InitStruct.GPIO_Mode = GPIO_Mode_AN;
+		GPIO_InitStruct.GPIO_PuPd = GPIO_PuPd_NOPULL;
     break;
   case INPUT:
   case EXTERNAL_INTERRUPT:

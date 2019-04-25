@@ -37,14 +37,16 @@ void UBLOX::init(UART* uart)
   serial_ = uart;
 
 
-  serial_->set_mode(115200, UART::MODE_8N1);
+  //serial_->set_mode(115200, UART::MODE_8N1);
+  serial_->set_mode(9600, UART::MODE_8N1);
   serial_->register_rx_callback(cb);
 
-  if (!detect_baudrate())
-    return;
+  //if (!detect_baudrate())
+  //  return;
 
   // Otherwise, Configure the GNSS receiver
-  set_baudrate(115200);
+  //set_baudrate(115200);
+  set_baudrate(9600);
   set_dynamic_mode();
   set_nav_rate(100);
   enable_message(CLASS_NAV, NAV_PVT, 1);
@@ -331,9 +333,10 @@ uint64_t convert_to_unix(UBLOX::GNSS_TIME_T time)
  */
 bool UBLOX::new_data()
 {
-  return this->new_data_
-      && (this->nav_message_.iTOW == this->pos_ecef_.iTOW)
-      && (this->nav_message_.iTOW == this->vel_ecef_.iTOW);
+  return this->new_data_;
+//   return this->new_data_
+//       && (this->nav_message_.iTOW == this->pos_ecef_.iTOW)
+//       && (this->nav_message_.iTOW == this->vel_ecef_.iTOW);
 }
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wmissing-field-initializers" //Ignore warning about leaving struct fields blank
@@ -354,7 +357,7 @@ UBLOX::GNSSPVT UBLOX::read()
     data.rosflight_timestamp = this->last_pvt_timestamp;
 
     this->new_data_=false;
-
+    
     return data;
 }
 
