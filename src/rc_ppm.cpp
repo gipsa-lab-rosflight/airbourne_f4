@@ -31,9 +31,9 @@
 
 #include "rc_ppm.h"
 
-RC_PPM* RC_PPM_Ptr = NULL;
+RC_PPM *RC_PPM_Ptr = NULL;
 
-void RC_PPM::init(const pwm_hardware_struct_t* conf)
+void RC_PPM::init(const pwm_hardware_struct_t *conf)
 {
   // Initialize Variables
   for (int i = 0; i < 8; i++)
@@ -101,7 +101,7 @@ bool RC_PPM::lost()
 
 void RC_PPM::pulse_callback()
 {
-  if(TIM_GetITStatus(TIM_, TIM_IT_))
+  if (TIM_GetITStatus(TIM_, TIM_IT_))
   {
     TIM_ClearITPendingBit(TIM_, TIM_IT_);
     last_pulse_ms_ = millis();
@@ -110,31 +110,31 @@ void RC_PPM::pulse_callback()
     {
     case TIM_Channel_1:
     default:
-        current_capture_ = TIM_GetCapture1(TIM_);
-        break;
+      current_capture_ = TIM_GetCapture1(TIM_);
+      break;
     case TIM_Channel_2:
-        current_capture_ = TIM_GetCapture2(TIM_);
-        break;
+      current_capture_ = TIM_GetCapture2(TIM_);
+      break;
     case TIM_Channel_3:
-        current_capture_ = TIM_GetCapture3(TIM_);
-        break;
+      current_capture_ = TIM_GetCapture3(TIM_);
+      break;
     case TIM_Channel_4:
-        current_capture_ = TIM_GetCapture4(TIM_);
-        break;
+      current_capture_ = TIM_GetCapture4(TIM_);
+      break;
 
     }
     uint16_t diff = current_capture_ - last_capture_;
     last_capture_ = current_capture_;
 
     // We're on a new frame
-    if(diff > 2500)
+    if (diff > 2500)
     {
       chan_ = 0;
     }
     else
     {
       // If it's a valid reading, then save it!
-      if(diff > 750 && diff < 2250 && chan_ < 8)
+      if (diff > 750 && diff < 2250 && chan_ < 8)
       {
         rc_raw_[chan_] = diff;
       }
@@ -159,13 +159,13 @@ void RC_PPM::irq_handler()
 /*extern "C"
 {
 
-void PPM_RC_IQRHandler(void)
-{
-    if(RC_PPM_Ptr != NULL)
+  void PPM_RC_IQRHandler(void)
+  {
+    if (RC_PPM_Ptr != NULL)
     {
-        RC_PPM_Ptr->pulse_callback();
+      RC_PPM_Ptr->pulse_callback();
     }
-}
+  }
 
 }
 */
