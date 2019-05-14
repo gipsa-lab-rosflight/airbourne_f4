@@ -30,33 +30,67 @@
  */
 
 
-#include "system.h"
-#include "uart.h"
+#ifdef TARGET_REVO
+#pragma message("TARGET_REVO")
 #include "revo_f4.h"
+#define UART_DEV UART3
+#endif
+
+#ifdef TARGET_AIRBOT
+#pragma message("TARGET_AIRBOT")
+#include "airbot_f4.h"
+#define UART_DEV UART6
+#endif
+
+#include "uart.h"
+#include "led.h"
+#include "vcp.h"
+#include "printf.h"
+
+VCP *vcpPtr = NULL;
 
 UART *uartPtr = NULL;
 
 void rx_callback(uint8_t byte)
 {
   uartPtr->put_byte(byte);
+
+	printf("0x%02X\n", (int)byte);
+}
+
+static void _putc(void *p, char c)
+{
+  (void)p; // avoid compiler warning about unused variable
+  vcpPtr->put_byte(c);
 }
 
 int main()
 {
   systemInit();
 
+	VCP vcp;
+  vcp.init();
+  vcpPtr = &vcp;
+	init_printf(NULL, _putc);
+	
   UART uart;
-  uart.init(&uart_config[UART3], 115200);
+  uart.init(&uart_config[UART_DEV], 115200);
   uartPtr = &uart;
-
+	
   uart.register_rx_callback(rx_callback);  // Uncomment to test callback version
-
+	
+  LED info;
+  info.init(LED2_GPIO, LED2_PIN);
+	delay(500);
+  info.on();
+	
   int i = 0;
   while (1)
   {
+		printf("testing\n");
     uint8_t hello_string[9] = "testing\n";
-    //uart.write(hello_string, 8); // Uncomment to test Tx
-    delay(100);
+    uart.write(hello_string, 8); // Uncomment to test Tx
+    delay(1000);
 
     // Polling version (uncomment to test)
 //    while (uart.rx_bytes_waiting())

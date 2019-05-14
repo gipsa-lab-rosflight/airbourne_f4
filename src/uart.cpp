@@ -33,6 +33,7 @@
 
 UART *UART1Ptr = NULL;
 UART *UART3Ptr = NULL;
+UART *UART6Ptr = NULL;
 
 UART::UART()
 {}
@@ -45,7 +46,7 @@ void UART::init(const uart_hardware_struct_t *conf, uint32_t baudrate, uart_mode
 
   //initialize pins
   rx_pin_.init(c_->GPIO, c_->Rx_Pin, GPIO::PERIPH_IN_OUT);
-  tx_pin_.init(c_->GPIO, c_->Tx_Pin, GPIO::PERIPH_IN_OUT);
+  tx_pin_.init(c_->GPIO, c_->Tx_Pin, GPIO::PERIPH_OUT);
   GPIO_PinAFConfig(c_->GPIO, c_->Rx_PinSource, c_->GPIO_AF);
   GPIO_PinAFConfig(c_->GPIO, c_->Tx_PinSource, c_->GPIO_AF);
 
@@ -58,6 +59,10 @@ void UART::init(const uart_hardware_struct_t *conf, uint32_t baudrate, uart_mode
   if (c_->dev == USART3)
   {
     UART3Ptr = this;
+  }
+  if (c_->dev == USART6)
+  {
+    UART6Ptr = this;
   }
 
   init_UART(baudrate, mode);
@@ -343,6 +348,10 @@ extern "C"
   {
     UART3Ptr->DMA_Rx_IRQ_callback();
   }
+  void USART6_IRQHandler(void)
+  {
+    UART6Ptr->DMA_Rx_IRQ_callback();
+  }
 
   void DMA2_Stream5_IRQHandler(void)
   {
@@ -360,6 +369,25 @@ extern "C"
       DMA_ClearITPendingBit(DMA2_Stream7, DMA_IT_TCIF7);
       DMA_Cmd(DMA2_Stream7, DISABLE);
       UART1Ptr->DMA_Tx_IRQ_callback();
+    }
+  }
+
+  void DMA2_Stream1_IRQHandler(void)
+  {
+    if (DMA_GetITStatus(DMA2_Stream1, DMA_IT_TCIF1))
+    {
+      DMA_ClearITPendingBit(DMA2_Stream1, DMA_IT_TCIF1);
+      UART6Ptr->DMA_Rx_IRQ_callback();
+    }
+  }
+
+  void DMA2_Stream6_IRQHandler(void)
+  {
+    if (DMA_GetITStatus(DMA2_Stream6, DMA_IT_TCIF6))
+    {
+      DMA_ClearITPendingBit(DMA2_Stream6, DMA_IT_TCIF6);
+      DMA_Cmd(DMA2_Stream6, DISABLE);
+      UART6Ptr->DMA_Tx_IRQ_callback();
     }
   }
 

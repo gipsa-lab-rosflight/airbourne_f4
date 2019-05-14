@@ -28,7 +28,7 @@
 
 TARGET = uart_printf
 
-BOARD ?= REVO
+BOARD ?= AIRBOT
 
 DEBUG ?= GDB
 
@@ -126,6 +126,7 @@ CSOURCES =  $(CMSIS_SRC) \
 CXXSOURCES = $(SRC_DIR)/gpio.cpp \
              $(SRC_DIR)/led.cpp \
              $(SRC_DIR)/uart.cpp \
+             $(SRC_DIR)/vcp.cpp \
              $(PRINTF_DIR)/printf.cpp \
              main.cpp
 
