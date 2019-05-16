@@ -139,6 +139,9 @@ public:
   int8_t read(uint8_t addr, uint8_t reg, uint8_t num_bytes, uint8_t *data, void(*callback)(uint8_t) = nullptr,
               bool blocking = false);
   int8_t write(uint8_t addr, uint8_t reg, uint8_t data, void(*callback)(uint8_t), bool blocking = false);
+	int8_t writeReg(uint8_t addr, uint8_t reg, uint8_t data, void(*callback)(uint8_t)=nullptr, bool blocking = false);
+  int8_t writeReg(uint8_t addr, uint8_t reg, uint8_t num_bytes, const uint8_t *data);	
+  int8_t write(uint8_t addr, uint8_t num_bytes, const uint8_t *data);	
 
   int8_t write(uint8_t addr, uint8_t reg, uint8_t data);
   int8_t read(uint8_t addr, uint8_t reg, uint8_t *data);
