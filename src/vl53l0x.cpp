@@ -31,6 +31,7 @@
 		}																						 \
 	}
 
+#ifdef DEBUG
 #define I2C_CHECK( cmd ) {																		\
 		int8_t res = cmd;																					\
 		if(res!=I2C::RESULT_SUCCESS)															\
@@ -38,6 +39,9 @@
 			printf("i2c error %d line %d\n", (int) res, __LINE__);	\
 		}																													\
 	}
+#else
+#define I2C_CHECK( cmd ) cmd
+#endif
 
 uint8_t VL53L0X::rangeBuf_[2];
 void (*VL53L0X::cb_)(uint16_t, bool);
