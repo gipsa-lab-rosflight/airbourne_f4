@@ -43,6 +43,10 @@ void _multirange_range_cb(uint16_t result, bool success)
 MultiRange::MultiRange()
 {
 	multirangePtr = this;
+	sensor_present_ = false;
+	is_updating_ = false;
+	new_data_ = false;
+	nbSensors_ = 0;
 }
 
 bool MultiRange::init(I2C *i2c, uint8_t base_address)
