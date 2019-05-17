@@ -49,6 +49,7 @@ bool MultiRange::init(I2C *i2c, uint8_t base_address)
 {
 	sensor_present_ = false;
 	is_updating_ = false;
+	new_data_ = false;
 	nbSensors_ = 0;
 	last_update_ms_ = millis();
 	
@@ -145,6 +146,16 @@ void MultiRange::range_callback(uint16_t result, bool success)
 	else
 	{
 		is_updating_ = false;
+		new_data_ = true;
 	}
 }
 
+void MultiRange::read(uint16_t *ranges)
+{
+	for(uint8_t i=0; i<nbSensors_; i++)
+	{
+		ranges[i] = ranges_[i];
+	}
+	
+	new_data_ = false;
+}

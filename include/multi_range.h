@@ -27,6 +27,7 @@ private:
 	uint8_t cur_sensor_;
 	bool is_updating_;
 	I2C *i2c_;
+	bool new_data_;
 	
 public:
 	MultiRange();
@@ -34,12 +35,15 @@ public:
 	bool present();
 
 	void update();
+
+	inline bool has_new_data(){ return new_data_; }
 	
 	void range_callback(uint16_t result, bool success);
 
 	inline uint8_t getNbSensors() {return nbSensors_;}
 	inline uint16_t getRange(uint8_t k) {return ranges_[k];}
 	
+	void read(uint16_t *ranges);
 };
 
 #endif // MULTI_RANGE_H
