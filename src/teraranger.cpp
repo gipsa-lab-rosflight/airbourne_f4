@@ -60,7 +60,7 @@ bool TeraRanger::init(I2C *_i2c)
 
   uint8_t id=0;
   uint8_t res=0;
-  if (i2c_->write(TERARANGER_DEFAULT_ADDRESS, 0xFF, TERARANGER_TRIGGER_READING) == I2C::RESULT_SUCCESS)
+  if (i2c_->write(TERARANGER_DEFAULT_ADDRESS, 0xFF, (uint8_t)TERARANGER_TRIGGER_READING) == I2C::RESULT_SUCCESS)
   {
     sensor_present_ = true;
     last_callback_ms_ = millis();
