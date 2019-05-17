@@ -520,7 +520,7 @@ void VL53L0X::initHardware()
   uint8_t spadCount;
   bool spadTypeIsAperture;
   if (!getSPADInfo(&spadCount, &spadTypeIsAperture)) {
-    printf("VL53L0X : Failed retrieving SPAD info!");
+    //printf("VL53L0X : Failed retrieving SPAD info!");
   }
 
 	//printf("read spad map\n");
@@ -689,7 +689,7 @@ void VL53L0X::initHardware()
 
   writeRegister(SYSTEM_SEQUENCE_CONFIG, 0x01);
   if (!performSingleRefCalibration(0x40)) {
-    printf("VL53L0X: Failed performing ref/vhv calibration!");
+    //printf("VL53L0X: Failed performing ref/vhv calibration!");
   }
 
   // -- VL53L0X_perform_vhv_calibration() end
@@ -698,7 +698,7 @@ void VL53L0X::initHardware()
 
   writeRegister(SYSTEM_SEQUENCE_CONFIG, 0x02);
   if (!performSingleRefCalibration(0x00)) {
-    printf("VL53L0X: Failed performing ref/phase calibration!");
+    //printf("VL53L0X: Failed performing ref/phase calibration!");
   }
 
   // -- VL53L0X_perform_phase_calibration() end
