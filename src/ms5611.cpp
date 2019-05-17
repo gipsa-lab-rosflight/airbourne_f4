@@ -46,7 +46,7 @@ bool MS5611::init(I2C *_i2c)
   next_update_ms_ = millis();
   last_update_ms_ = millis();
 
-  i2c_->write(0, 0, 0);
+  i2c_->write(0, 0, (uint8_t)0);
   delay(1);
   if (i2c_->write(ADDR, RESET, 1) != I2C::RESULT_SUCCESS)
   {
@@ -163,7 +163,7 @@ bool MS5611::read_prom()
     {
       reset();
       delay(3);
-      i2c_->write(0, 0, 0);
+      i2c_->write(0, 0, (uint8_t) 0);
       delay(3);
       // didn't work, try again
       return false;

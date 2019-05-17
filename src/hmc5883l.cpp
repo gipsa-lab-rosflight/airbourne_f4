@@ -58,9 +58,9 @@ bool HMC5883L::init(I2C *i2c_drv)
     bool result = true;
     // Configure HMC5833L
     result &= i2c_->write(HMC58X3_ADDR, HMC58X3_CRA,
-                          HMC58X3_CRA_DO_75 | HMC58X3_CRA_NO_AVG | HMC58X3_CRA_MEAS_MODE_NORMAL); // 75 Hz Measurement, no bias, no averaging
-    result &= i2c_->write(HMC58X3_ADDR, HMC58X3_CRB, HMC58X3_CRB_GN_390); // 390 LSB/Gauss
-    result &= i2c_->write(HMC58X3_ADDR, HMC58X3_MODE, HMC58X3_MODE_CONTINUOUS); // Continuous Measurement Mode
+                          (uint8_t) (HMC58X3_CRA_DO_75 | HMC58X3_CRA_NO_AVG | HMC58X3_CRA_MEAS_MODE_NORMAL)); // 75 Hz Measurement, no bias, no averaging
+    result &= i2c_->write(HMC58X3_ADDR, HMC58X3_CRB, (uint8_t) HMC58X3_CRB_GN_390); // 390 LSB/Gauss
+    result &= i2c_->write(HMC58X3_ADDR, HMC58X3_MODE, (uint8_t) HMC58X3_MODE_CONTINUOUS); // Continuous Measurement Mode
     mag_present_ = true;
     return result;
   }
