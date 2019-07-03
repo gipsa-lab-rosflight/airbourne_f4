@@ -78,8 +78,8 @@ void I2C::init(const i2c_hardware_struct_t *c)
 
   GPIO_PinAFConfig(c->GPIO, c->SCL_PinSource, c->GPIO_AF);
   GPIO_PinAFConfig(c->GPIO, c->SDA_PinSource, c->GPIO_AF);
-  scl_.init(c->GPIO, c->SCL_Pin, GPIO::PERIPH_IN_OUT);
-  sda_.init(c->GPIO, c->SDA_Pin, GPIO::PERIPH_IN_OUT);
+  scl_.init(c->GPIO, c->SCL_Pin, GPIO::PERIPH_IN_OUT_PULLUP);
+  sda_.init(c->GPIO, c->SDA_Pin, GPIO::PERIPH_IN_OUT_PULLUP);
 
   //initialize the i2c itself
   I2C_DeInit(c->dev);
@@ -176,8 +176,8 @@ void I2C::unstick()
   delayMicroseconds(1);
 
   // turn things back on
-  scl_.set_mode(GPIO::PERIPH_IN_OUT);
-  sda_.set_mode(GPIO::PERIPH_IN_OUT);
+  scl_.set_mode(GPIO::PERIPH_IN_OUT_PULLUP);
+  sda_.set_mode(GPIO::PERIPH_IN_OUT_PULLUP);
   I2C_Cmd(c_->dev, ENABLE);
 
   current_status_ = IDLE;
@@ -718,8 +718,8 @@ bool I2C::check_busy()
         delayMicroseconds(1);
 
         // turn things back on
-        scl_.set_mode(GPIO::PERIPH_IN_OUT);
-        sda_.set_mode(GPIO::PERIPH_IN_OUT);
+        scl_.set_mode(GPIO::PERIPH_IN_OUT_PULLUP);
+        sda_.set_mode(GPIO::PERIPH_IN_OUT_PULLUP);
         I2C_Cmd(c_->dev, ENABLE);
 
         current_status_ = IDLE;
