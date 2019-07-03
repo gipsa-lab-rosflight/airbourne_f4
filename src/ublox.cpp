@@ -2,6 +2,8 @@
 
 #include <time.h>
 
+#include "printf.h"
+
 #define DEG2RAD (3.14159 / 180.0)
 //#define DBG(...) printf(__VA_ARGS__)
 #define DBG(...)
@@ -31,7 +33,9 @@ void UBLOX::init(UART *uart)
   length_ = 0;
   ck_a_ = 0;
   ck_b_ = 0;
-
+	
+	new_data_ = false;
+	
   // Find the right baudrate
   looking_for_nmea_ = true;
   serial_ = uart;
@@ -41,12 +45,12 @@ void UBLOX::init(UART *uart)
   serial_->set_mode(57600, UART::MODE_8N1);
   serial_->register_rx_callback(cb);
 
-  if (!detect_baudrate())
-    return;
+  //if (!detect_baudrate())
+  //  return;
 
   // Otherwise, Configure the GNSS receiver
   //set_baudrate(115200);
-  //set_baudrate(57600);
+  set_baudrate(57600);
   set_dynamic_mode();
   set_nav_rate(100);
   enable_message(CLASS_NAV, NAV_PVT, 1);
