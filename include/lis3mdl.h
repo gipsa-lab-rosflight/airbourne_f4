@@ -61,7 +61,7 @@
 class LIS3MDL
 {
 public:
-  bool init(I2C* i2c_drv, uint8_t addr = LIS3MDL_SA1_LOW_ADDRESS);
+  bool init(I2C* i2c_drv, uint8_t addr = LIS3MDL_SA1_HIGH_ADDRESS);
   void update();
   bool read(float mag_data[]);
   bool present();
