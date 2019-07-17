@@ -80,6 +80,9 @@ bool LIS3MDL::present()
 
 void LIS3MDL::update()
 {
+	if(!mag_present_)
+		init(i2c_, addr_);
+	
   if (millis() > next_update_ms_)
   {
     if (i2c_->read(addr_, LIS3MDL_OUT_X_L, 6, i2c_buf_, &read_cb) == I2C::RESULT_SUCCESS)
@@ -90,11 +93,13 @@ void LIS3MDL::update()
 void LIS3MDL::cb(uint8_t result)
 {
   if (result == I2C::RESULT_SUCCESS)
+	{
     mag_present_ = true;
-  last_update_ms_ = millis();
-  data_[0] = static_cast<float>(static_cast<int16_t>((i2c_buf_[1] << 8) | i2c_buf_[0]));
-  data_[1] = static_cast<float>(static_cast<int16_t>((i2c_buf_[3] << 8) | i2c_buf_[2]));
-  data_[2] = static_cast<float>(static_cast<int16_t>((i2c_buf_[5] << 8) | i2c_buf_[3]));
+		last_update_ms_ = millis();
+		data_[0] = static_cast<float>(static_cast<int16_t>((i2c_buf_[1] << 8) | i2c_buf_[0]));
+		data_[1] = static_cast<float>(static_cast<int16_t>((i2c_buf_[3] << 8) | i2c_buf_[2]));
+		data_[2] = static_cast<float>(static_cast<int16_t>((i2c_buf_[5] << 8) | i2c_buf_[3]));
+	}
 }
 
 void read_cb(uint8_t result)
