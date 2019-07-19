@@ -138,8 +138,8 @@ const i2c_hardware_struct_t i2c_config[NUM_I2C] = {
 #define LED2_PIN	GPIO_Pin_5
 
 /////////////////////// PWM CONFIG ///////////////////////
-#define PWM_NUM_CHANNELS 13
-#define PWM_NUM_OUTPUTS 11
+#define PWM_NUM_CHANNELS 11
+#define PWM_NUM_OUTPUTS 9
 //typedef struct {
 //	GPIO_TypeDef* GPIO;
 //	uint16_t GPIO_Pin;
@@ -160,13 +160,13 @@ const pwm_hardware_struct_t pwm_config[PWM_NUM_CHANNELS] =
   {GPIOA, GPIO_Pin_0,  GPIO_PinSource0,  TIM5,  TIM_Channel_1, GPIO_AF_TIM5, TIM5_IRQn, TIM_IT_CC1, }, // PWM6
   {GPIOC, GPIO_Pin_9,  GPIO_PinSource9,  TIM8,  TIM_Channel_4, GPIO_AF_TIM8, TIM8_CC_IRQn, TIM_IT_CC4, }, // RC 6 (Flexi-10)
   {GPIOC, GPIO_Pin_8,  GPIO_PinSource8,  TIM8,  TIM_Channel_3, GPIO_AF_TIM8, TIM8_CC_IRQn, TIM_IT_CC3, }, // RC 5 (Flexi-9)
-  {GPIOC, GPIO_Pin_7,  GPIO_PinSource7,  TIM8,  TIM_Channel_2, GPIO_AF_TIM8, TIM8_CC_IRQn, TIM_IT_CC2, }, // RC 4 (Flexi-8)
-  {GPIOC, GPIO_Pin_6,  GPIO_PinSource6,  TIM8,  TIM_Channel_1, GPIO_AF_TIM8, TIM8_CC_IRQn, TIM_IT_CC1, }, // RC 3 (Flexi-7)
+  //{GPIOC, GPIO_Pin_7,  GPIO_PinSource7,  TIM8,  TIM_Channel_2, GPIO_AF_TIM8, TIM8_CC_IRQn, TIM_IT_CC2, }, // RC 4 (Flexi-8)
+  //{GPIOC, GPIO_Pin_6,  GPIO_PinSource6,  TIM8,  TIM_Channel_1, GPIO_AF_TIM8, TIM8_CC_IRQn, TIM_IT_CC1, }, // RC 3 (Flexi-7)
   {GPIOB, GPIO_Pin_15, GPIO_PinSource15, TIM12, TIM_Channel_2, GPIO_AF_TIM12, TIM8_BRK_TIM12_IRQn, TIM_IT_CC2, }, // RC2 (Flexi-6)
   {GPIOB, GPIO_Pin_14, GPIO_PinSource14, TIM12, TIM_Channel_1, GPIO_AF_TIM12, TIM8_BRK_TIM12_IRQn, TIM_IT_CC1, }, // RC1 (Flexi-5) // Used for PPM RC
   {GPIOA, GPIO_Pin_8,  GPIO_PinSource8,  TIM1,  TIM_Channel_1, GPIO_AF_TIM1, TIM1_CC_IRQn, TIM_IT_CC1, }, // Buzzer
 };
-#define RC_PPM_PIN 11
+#define RC_PPM_PIN 9
 #define PPM_RC_IQRHandler TIM8_BRK_TIM12_IRQHandler
 
 
